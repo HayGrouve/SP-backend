@@ -1,45 +1,85 @@
 const mongoose = require('mongoose');
 
 const FixtureSchema = mongoose.Schema({
-  fixture_id: String,
-  league_id: Number,
+  fixture: {
+    type: Object,
+    id: String,
+    referee: String,
+    timezone: String,
+    date: String,
+    timestamp: Number,
+    periods: {
+      type: Object,
+      first: Number,
+      second: Number,
+    },
+    venue: {
+      type: Object,
+      id: String,
+      name: String,
+      city: String,
+    },
+    status: {
+      type: Object,
+      long: String,
+      short: String,
+      elapsed: Number,
+    },
+  },
   league: {
     type: Object,
+    id: String,
     name: String,
     country: String,
     logo: String,
     flag: String,
+    season: Number,
+    round: String,
   },
-  event_date: String,
-  event_timestamp: Number,
-  firstHalfStart: Number,
-  secondHalfStart: Number,
-  round: String,
-  status: String,
-  statusShort: String,
-  elapsed: Number,
-  venue: String,
-  referee: String,
-  homeTeam: {
+  teams: {
     type: Object,
-    team_id: Number,
-    team_name: String,
-    logo: String,
+    home: {
+      type: Object,
+      id: Number,
+      name: String,
+      logo: String,
+      winner: String,
+    },
+    away: {
+      type: Object,
+      id: Number,
+      name: String,
+      logo: String,
+      winner: String,
+    },
   },
-  awayTeam: {
+  goals: {
     type: Object,
-    team_id: Number,
-    team_name: String,
-    logo: String,
+    home: Number,
+    away: Number,
   },
-  goalsHomeTeam: Number,
-  goalsAwayTeam: Number,
   score: {
     type: Object,
-    halftime: String,
-    fulltime: String,
-    extratime: String,
-    penalty: String,
+    halftime: {
+      type: Object,
+      home: Number,
+      away: Number,
+    },
+    fulltime: {
+      type: Object,
+      home: Number,
+      away: Number,
+    },
+    extratime: {
+      type: Object,
+      home: Number,
+      away: Number,
+    },
+    penalty: {
+      type: Object,
+      home: Number,
+      away: Number,
+    },
   },
   odds: [
     {
