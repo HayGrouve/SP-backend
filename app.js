@@ -2,7 +2,6 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const fixtures = require('./routes/fixtures');
-const getOdds = require('./utils/getFixtures');
 require('dotenv/config');
 
 const app = express();
@@ -15,8 +14,6 @@ mongoose.connect(
     console.log(`Connected to ${process.env.DB_CONN}`);
   }
 );
-
-getOdds(1);
 
 //Express config
 app.use(express.urlencoded({ extended: true }));

@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const FixturesModel = require('../models/Fixture');
+const getFixtures = require('../utils/getFixtures');
+
+getFixtures.insertFixtures(1);
 
 //GET fixtures
 router.get('/', async (req, res) => {
