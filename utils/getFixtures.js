@@ -42,7 +42,7 @@ const getDataPerDay = async (days = 0) => {
     // };
     // let response = await axios.request(options);
     // let pageTotal = response.data.paging.total;
-    let pageTotal = 1;
+    let pageTotal = 2;
     await getOddsPerPage(pageTotal, date, month, year);
     await getFixturesPerDay(date, month, year);
   }
@@ -50,17 +50,16 @@ const getDataPerDay = async (days = 0) => {
 };
 
 const mergeFixturesAndOdds = () => {
-  dataArr = fixturesArr.map((fixtureItem) => {
-    const { fixture } = fixtureItem;
-    for (let oddItem = 0; oddItem < oddsArr.length; oddItem++) {
-      const { fixtureId, odds } = oddsArr[oddItem];
-      if (fixture.id === fixtureId) {
-        return { ...fixtureItem, odds };
-      } else {
-        return fixtureItem;
-      }
-    }
-  });
+  console.log(oddsArr, oddsArr.length);
+
+  dataArr = fixturesArr
+    .map((fixtureItem) => ({
+      ...fixtureItem,
+      ...oddsArr.find(
+        (oddItem) => oddItem.fixtureId === fixtureItem.fixture.id
+      ),
+    }))
+    .filter((item) => item.odds);
 };
 
 const getOddsPerPage = async (totalPages = 1, date, month, year) => {
@@ -113,9 +112,9 @@ const requestData = async (url, date, month, year, page, bookmaker, bet) => {
       'x-rapidapi-host': 'api-football-v1.p.rapidapi.com',
     },
   };
-  page ? (options.page = page) : null;
-  bookmaker ? (options.bookmaker = bookmaker) : null;
-  bet ? (options.bet = bet) : null;
+  page && (options.params.page = page);
+  bookmaker && (options.params.bookmaker = bookmaker);
+  bet && (options.params.bet = bet);
   return await axios.request(options);
 };
 
