@@ -2,8 +2,27 @@ const express = require('express');
 const router = express.Router();
 const FixturesModel = require('../models/Fixture');
 const getFixtures = require('../utils/getFixtures');
+const cron = require('node-cron');
 
-getFixtures.insertFixtures(1);
+cron.schedule(
+  '5 10 * * 5',
+  () => {
+    getFixtures.insertFixtures(4);
+  },
+  {
+    timezone: 'Europe/Sofia',
+  }
+);
+
+cron.schedule(
+  '5 10 * * 2',
+  () => {
+    getFixtures.insertFixtures(3);
+  },
+  {
+    timezone: 'Europe/Sofia',
+  }
+);
 
 //GET fixtures
 router.get('/', async (req, res) => {
