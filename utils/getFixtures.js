@@ -2,13 +2,15 @@ const axios = require('axios').default;
 const Fixtures = require('../models/Fixture');
 const FixturesModel = require('../models/Fixture');
 
-Fixtures.deleteMany({}, (err) => {
-  if (err) {
-    console.log(err);
-  } else {
-    console.log('Fixtures removed!');
-  }
-});
+const deleteFixtures = () => {
+  Fixtures.deleteMany({}, (err) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log('Fixtures removed!');
+    }
+  });
+};
 
 const oddsArr = [];
 let fixturesArr = [];
@@ -119,6 +121,7 @@ const requestData = async (url, date, month, year, page, bookmaker, bet) => {
 };
 
 const insertFixtures = async (days = 0) => {
+  deleteFixtures();
   await getDataPerDay(days);
   FixturesModel.insertMany(dataArr, (err) => {
     if (err) {
